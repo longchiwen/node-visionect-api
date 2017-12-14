@@ -1,3 +1,35 @@
+// logger that writes to console
+var consoleLogger =  {
+  log:function() {
+    console.log.apply(this, arguments);
+  },
+  info:function() {
+    console.info.apply(this, arguments);
+  },
+  warn:function() {
+    console.warn.apply(this, arguments);
+  },
+  error:function() {
+    console.error.apply(this, arguments);
+  }
+}
+
+// logger that silences all output
+var voidLogger =  {
+  log:function() {
+    // suppress output
+  },
+  info:function() {
+    // suppress output
+  },
+  warn:function() {
+    // suppress output
+  },
+  error:function() {
+    // suppress output
+  }
+}
+
 var visionectHelper = {
   getAuthorization : getAuthorization,
   setApiKey : setApiKey,
@@ -8,8 +40,13 @@ var visionectHelper = {
   getHost : getHost,
   setPort : setPort,
   getPort : getPort,
+  setLogger : setLogger,
+  getLogger : getLogger,
   _apiKey : '',
-  _apiSecret : ''
+  _apiSecret : '',
+
+  // write to console by default
+  _logger: consoleLogger
 }
 
 module.exports = visionectHelper;
@@ -55,4 +92,12 @@ function setPort(port){
 
 function getPort(){
   return this._port;
+}
+
+function setLogger(logger){
+  this._logger = logger;
+}
+
+function getLogger(){
+  return this._logger || voidLogger;
 }

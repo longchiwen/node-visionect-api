@@ -148,4 +148,6 @@ function setConfig(config) {
     helper.setApiKey(config.apiKey);
     helper.setHost(config.host);
     helper.setPort(config.port);
+    
+    if (typeof config.logger !== 'undefined') helper.setLogger(config.logger);
 }

@@ -42,7 +42,7 @@ function visionectRequest(path, method, contentType, body, expectedHttpCode) {
         encoding: 'binary'
     });
 
-    console.log(method, helper.getHost(), helper.getPort(), path, body, authorization, date);
+    helper.getLogger().log(method, helper.getHost(), helper.getPort(), path, body, authorization, date);
 
     var promise = new Promise(
         function (resolve, reject) {
@@ -98,7 +98,7 @@ function visionectSendImage(uuid, imageFile) {
     headers.Date = date;
     headers.Authorization = helper.getAuthorization(path, method, headers['content-type'], date);
 
-    console.log(helper.getHost());
+    helper.getLogger().log(helper.getHost());
     var request = http.request({
         method: method,
         host: helper.getHost(),
@@ -107,15 +107,15 @@ function visionectSendImage(uuid, imageFile) {
         headers: headers
     });
 
-    // console.log(util.inspect(form, {showHidden: false, depth: null}));
+    // helper.getLogger().log(util.inspect(form, {showHidden: false, depth: null}));
 
-    console.log('uuid : ', uuid);
-    console.log('host : ', helper.getHost());
-    console.log('content-type : ', headers['content-type']);
-    console.log('apiKey : ', helper.getApiKey());
-    console.log('apiSecret : ', helper.getApiSecret());
-    console.log('requete url : ', helper.getHost() + ':' + '8081' + path);
-    console.log('headers : ', util.inspect(headers, {showHidden: false, depth: null}));
+    helper.getLogger().log('uuid : ', uuid);
+    helper.getLogger().log('host : ', helper.getHost());
+    helper.getLogger().log('content-type : ', headers['content-type']);
+    helper.getLogger().log('apiKey : ', helper.getApiKey());
+    helper.getLogger().log('apiSecret : ', helper.getApiSecret());
+    helper.getLogger().log('requete url : ', helper.getHost() + ':' + '8081' + path);
+    helper.getLogger().log('headers : ', util.inspect(headers, {showHidden: false, depth: null}));
 
     var promise = new Promise(
         function (resolve, reject) {
@@ -131,11 +131,11 @@ function visionectSendImage(uuid, imageFile) {
                     res.end('error imageStream : ', err);
                 });
                 res.on('data', function (chunk) {
-                    console.log('chocolate ',chunk);
+                    helper.getLogger().log('chocolate ',chunk);
                     body += chunk;
                 });
                 res.on('end', function () {
-                    console.log('end : ' + body);
+                    helper.getLogger().log('end : ' + body);
                     resolve(body);
                 });
             });
@@ -195,7 +195,7 @@ function visionectGetImageMethod(path,expectedHttpCode,contentType){
         res.on('end', function(){
             fs.writeFile('logo.png', imagedata, 'binary', function(err){
                 if (err) throw err
-                console.log('File saved.')
+                helper.getLogger().log('File saved.')
             })
         })
 
