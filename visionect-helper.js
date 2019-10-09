@@ -1,103 +1,113 @@
 // logger that writes to console
-var consoleLogger =  {
-  log:function() {
+var consoleLogger = {
+  log: function() {
     console.log.apply(this, arguments);
   },
-  info:function() {
+  info: function() {
     console.info.apply(this, arguments);
   },
-  warn:function() {
+  warn: function() {
     console.warn.apply(this, arguments);
   },
-  error:function() {
+  error: function() {
     console.error.apply(this, arguments);
   }
-}
+};
 
 // logger that silences all output
-var voidLogger =  {
-  log:function() {
+var voidLogger = {
+  log: function() {
     // suppress output
   },
-  info:function() {
+  info: function() {
     // suppress output
   },
-  warn:function() {
+  warn: function() {
     // suppress output
   },
-  error:function() {
+  error: function() {
     // suppress output
   }
-}
+};
 
 var visionectHelper = {
-  getAuthorization : getAuthorization,
-  setApiKey : setApiKey,
-  getApiKey : getApiKey,
-  setApiSecret : setApiSecret,
-  getApiSecret : getApiSecret,
-  setHost : setHost,
-  getHost : getHost,
-  setPort : setPort,
-  getPort : getPort,
-  setLogger : setLogger,
-  getLogger : getLogger,
-  _apiKey : '',
-  _apiSecret : '',
+  getAuthorization: getAuthorization,
+  setApiKey: setApiKey,
+  getApiKey: getApiKey,
+  setApiSecret: setApiSecret,
+  getApiSecret: getApiSecret,
+  setHost: setHost,
+  getHost: getHost,
+  setPort: setPort,
+  getPort: getPort,
+  setProtocol: setProtocol,
+  getProtocol: getProtocol,
+  _apiKey: "",
+  _apiSecret: "",
 
   // write to console by default
   _logger: consoleLogger
-}
+};
 
 module.exports = visionectHelper;
 
-var crypto = require('crypto'),
-util = require('util');
+var crypto = require("crypto"),
+  util = require("util");
 
-function getAuthorization(path,method,contentType,date){
-
-  var auth = crypto.createHmac('sha256', this.getApiSecret())
-       .update(util.format('%s\n%s\n%s\n%s\n%s', method, '', contentType, date, path))
-       .digest('base64');
-  return authorizaton =  util.format('%s:%s', this.getApiKey(), auth);
+function getAuthorization(path, method, contentType, date) {
+  var auth = crypto
+    .createHmac("sha256", this.getApiSecret())
+    .update(
+      util.format("%s\n%s\n%s\n%s\n%s", method, "", contentType, date, path)
+    )
+    .digest("base64");
+  return (authorizaton = util.format("%s:%s", this.getApiKey(), auth));
 }
 
-function setApiKey(apiKey){
+function setApiKey(apiKey) {
   this._apiKey = apiKey;
 }
 
-function getApiKey(){
+function getApiKey() {
   return this._apiKey;
 }
 
-function setApiSecret(apiSecret){
+function setApiSecret(apiSecret) {
   this._apiSecret = apiSecret;
 }
 
-function getApiSecret(){
+function getApiSecret() {
   return this._apiSecret;
 }
 
-function setHost(host){
+function setHost(host) {
   this._host = host;
 }
 
-function getHost(){
+function getHost() {
   return this._host;
 }
 
-function setPort(port){
+function setPort(port) {
   this._port = port;
 }
 
-function getPort(){
+function getPort() {
   return this._port;
 }
 
-function setLogger(logger){
+function setLogger(logger) {
   this._logger = logger;
 }
 
-function getLogger(){
+function getLogger() {
   return this._logger || voidLogger;
+}
+
+function setProtocol(protocol) {
+  this._protocol = protocol;
+}
+
+function getProtocol() {
+  return this._protocol || "http";
 }
