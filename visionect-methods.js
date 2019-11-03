@@ -11,9 +11,15 @@ module.exports = visionectMethods;
 
 var helper = require("./visionect-helper"),
   http = require("http"),
+  https = require("https"),
   util = require("util"),
   FormData = require("form-data"),
   fs = require("fs");
+
+function getHttpClient(protocol) {
+  if (protocol.indexOf("https") > -1) return https
+  return http
+}
 
 function visionectRequest(path, method, contentType, body, expectedHttpCode) {
   var method = method ? method : "GET",
@@ -39,11 +45,12 @@ function visionectRequest(path, method, contentType, body, expectedHttpCode) {
 
   body = body ? JSON.stringify(body) : null;
 
-  var request = http.request({
+  httpClient = getHttpClient(helper.getProtocol())
+
+  var request = httpClient.request({
     method: method,
     host: helper.getHost(),
     port: helper.getPort(),
-    protocol: helper.getProtocol(),
     path: path,
     headers: headers,
     encoding: "binary"
@@ -118,11 +125,12 @@ function visionectSendImage(uuid, imageFile) {
   );
 
   helper.getLogger().log(helper.getHost());
-  var request = http.request({
+
+  httpClient = getHttpClient(helper.getProtocol())
+  var request = httpClient.request({
     method: method,
     host: helper.getHost(),
     port: helper.getPort(),
-    protocol: helper.getProtocol(),
     path: path,
     headers: headers
   });

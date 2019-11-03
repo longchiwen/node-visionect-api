@@ -42,6 +42,8 @@ var visionectHelper = {
   getPort: getPort,
   setProtocol: setProtocol,
   getProtocol: getProtocol,
+  setLogger: setLogger,
+  getLogger: getLogger,
   _apiKey: "",
   _apiSecret: "",
 
